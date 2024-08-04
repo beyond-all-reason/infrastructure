@@ -11,3 +11,9 @@ plugins:
   - git-revision-date-localized:
       enable_creation_date: true
   - search
+  - callouts
+markdown_extensions:
+  - attr_list
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
