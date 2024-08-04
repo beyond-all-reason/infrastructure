@@ -1,6 +1,6 @@
 site_name: BAR Infrastructure
 site_url: https://beyond-all-reason.github.io/infrastructure
-repo_url: https://github.com/beyond-all-reason/infrastracture
+repo_url: https://github.com/beyond-all-reason/infrastructure
 edit_uri: edit/main/docs/
 theme:
   name: material
