@@ -20,7 +20,7 @@ engine instances clients connect to to play the game.
 - [spads_config_bar]: Spads configuration, bar manager plugin, official plugins
   configuration.
 - [ansible-spads-setup]: Overall game servers configuration.
-- [p2004a/recoil-host]: Work in progress [tachyon] protocol autohost.
+- [recoil-autohost]: Work in progress [tachyon] protocol autohost.
 
 There is also some monitoring setup: health checks using
 [healthchecks.io](https://healthchecks.io/) and Okema's
@@ -75,13 +75,13 @@ Infrastructure responsible for making all the game assets available to players.
 - [RapidTools]: Packaging of game git repo to rapid format.
 - [rapid-hosting]: Rapid build server configuration.
 - Game CDN distribution: CDN management and syncers to CDN.
-    - [p2004a/spring-rapid-syncer]: Rapid repo syncer from builder host to CDN.
+    - [recoil-rapid-syncer]: Rapid repo syncer from builder host to CDN.
       Also includes a prober to for debugging CDN replication issues.
     - [p2004a/bar-repos-bunny-replication-lag-mitigation]: Helper to make sure
       updates to CDN are pushed in consistent way.
     - [p2004a/rapid-pool-init]: Builder for the initial rapid game download.
       package.
-- [p2004a/springfiles-mirror]: Map CDN: publishing, serving, IaC setup.
+- [maps-hosting]: Map CDN: publishing, serving, IaC setup.
 - Maps metadata setup
     - [maps-metadata]: Main repo that transforms data and distributes to other
       places via GitHub actions. Also contains source for a few server side
@@ -91,8 +91,8 @@ Infrastructure responsible for making all the game assets available to players.
 ## Auxiliary services
 
 - BAR Live services (replays, leaderboard, battles linked as `iframe`s from [www.beyondallreason.info](https://www.beyondallreason.info/)):
-    - [Jazcash/bar-db]: Backend service, effectively [https://api.bar-rts.com/](https://api.bar-rts.com/)
-    - [Jazcash/bar-live-services]: Frontend embeded in main website [https://bar-rts.com/](https://bar-rts.com/)
+    - [bar-db]: Backend service, effectively [https://api.bar-rts.com/](https://api.bar-rts.com/)
+    - [bar-live-services]: Frontend embeded in main website [https://bar-rts.com/](https://bar-rts.com/)
 - Teiserver contains some additional functionality in this category:
     - Microblog
     - Discord bot
@@ -105,7 +105,7 @@ Infrastructure responsible for making all the game assets available to players.
 [Yaribz/SPADS]: https://github.com/Yaribz/SPADS
 [spads_config_bar]: https://github.com/beyond-all-reason/spads_config_bar
 [ansible-spads-setup]: https://github.com/beyond-all-reason/ansible-spads-setup
-[p2004a/recoil-host]: https://github.com/p2004a/recoil-host
+[recoil-autohost]: https://github.com/beyond-all-reason/recoil-autohost
 [Teiserver]: https://github.com/beyond-all-reason/teiserver
 [hailstorm]: https://github.com/beyond-all-reason/hailstorm
 [ansible-teiserver]: https://github.com/beyond-all-reason/ansible-teiserver
@@ -118,11 +118,11 @@ Infrastructure responsible for making all the game assets available to players.
 [bar_debug_launcher]: https://github.com/beyond-all-reason/bar_debug_launcher
 [RapidTools]: https://github.com/beyond-all-reason/RapidTools
 [rapid-hosting]: https://github.com/beyond-all-reason/rapid-hosting
-[p2004a/spring-rapid-syncer]: https://github.com/p2004a/spring-rapid-syncer
+[recoil-rapid-syncer]: https://github.com/beyond-all-reason/recoil-rapid-syncer
 [p2004a/bar-repos-bunny-replication-lag-mitigation]: https://github.com/p2004a/bar-repos-bunny-replication-lag-mitigation
 [p2004a/rapid-pool-init]: https://github.com/p2004a/rapid-pool-init
-[p2004a/springfiles-mirror]: https://github.com/p2004a/springfiles-mirror
+[maps-hosting]: https://github.com/beyond-all-reason/maps-hosting
 [maps-metadata]: https://github.com/beyond-all-reason/maps-metadata
-[Jazcash/bar-db]: https://github.com/Jazcash/bar-db
-[Jazcash/bar-live-services]: https://github.com/Jazcash/bar-live-services
+[bar-db]: https://github.com/beyond-all-reason/bar-db
+[bar-live-services]: https://github.com/beyond-all-reason/bar-live-services
 [logs-upload]: https://github.com/beyond-all-reason/logs-upload
