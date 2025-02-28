@@ -2,18 +2,44 @@ site_name: BAR Infrastructure
 site_url: https://beyond-all-reason.github.io/infrastructure
 repo_url: https://github.com/beyond-all-reason/infrastructure
 edit_uri: edit/main/docs/
+nav:
+  - Home: index.md
+  - Current Infra: current_infra.md
+  - Assets Serving: assets_serving.md
+  - Component Index: components.md
+
 theme:
   name: material
   features:
     - content.action.edit
     - content.action.view
+  palette:
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: material/brightness-auto
+        name: Switch to light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
 plugins:
   - git-revision-date-localized:
       enable_creation_date: true
   - search
   - callouts
+  - d2:
+      layout: tala
+      dark_theme: 200
 markdown_extensions:
   - attr_list
   - admonition
   - pymdownx.details
   - pymdownx.superfences
+  - pymdownx.magiclink

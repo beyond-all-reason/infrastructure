@@ -1,0 +1,148 @@
+...@serving_colors
+
+**: {
+  &shape: image
+  width: 100
+}
+
+user: {
+  shape: person
+}
+
+user -> rapid
+user -> maps_metadata.worker
+user -> logs.worker
+user -> launcher_config.worker
+user -> files
+user -> pool.r2
+
+maps_metadata: Maps Metadata {
+  class: cloudflare
+  tooltip: |md
+    https://maps-metadata.beyondallreason.dev/
+
+    Cloudflare worker serving data from R2 bucket
+
+    https://github.com/beyond-all-reason/maps-metadata/tree/main/cloud/serving
+  |
+
+  worker
+
+  r2meta: R2 Metadata {shape: cylinder}
+  r2images: R2 Images {shape: cylinder}
+
+  worker -> r2meta: read
+  worker -> r2images: read
+  worker -> _.rowy: Image transform
+}
+
+launcher_config: Launcher Config {
+  class: cloudflare
+  tooltip: |md
+    https://launcher-config.beyondallreason.dev/config.json
+
+    Source: https://github.com/p2004a/spring-launcher-config-srv
+  |
+
+  KV: {shape: cylinder}
+  worker
+
+  worker -> KV: read/write
+}
+
+logs: Error Logs {
+  class: cloudflare
+  tooltip: |md
+    https://log.beyondallreason.dev/
+
+    Source: https://github.com/beyond-all-reason/logs-upload
+  |
+
+  worker
+  R2: {shape: cylinder}
+
+  worker -> R2: read/write
+}
+
+pool: Pool {
+  class: cloudflare
+  tooltip: |md
+    Hosts only https://pool-init.beyondallreason.dev/data.7z
+  |
+  r2: R2 {
+    shape: cylinder
+  }
+}
+
+files: Files {
+  shape: cloud
+  tooltip: |md
+    https://files-cdn.beyondallreason.dev/
+
+    Source: https://github.com/beyond-all-reason/maps-hosting
+  |
+  link: layers.files
+}
+
+rowy: Rowy {
+  class: gcp
+  shape: cloud
+  tooltip: |md
+    https://rowy.beyondallreason.dev/
+
+    Our own deployment of Rowy with custom patches as Firebase app on GCP.
+
+    There is also a bunch of small services there to support syncing, inside https://github.com/beyond-all-reason/maps-metadata/tree/main/cloud
+  |
+  link: layers.rowy
+}
+
+rowy -> maps_metadata_repo: sync single map
+rowy -> maps_metadata.r2images: save images
+
+pool_build: Pool package build {
+  icon: https://icons.terrastruct.com/gcp%2FProducts%20and%20services%2FDeveloper%20Tools%2FCloud%20Build.svg
+  shape: image
+  link: https://github.com/p2004a/rapid-pool-init
+}
+
+pool_build -> rapid: read
+pool_build -> pool.r2: write
+
+chobby: Chobby {
+  class: github
+  link: https://github.com/beyond-all-reason/BYAR-Chobby
+}
+
+spads_config: SPADS Config {
+  class: github
+  link: https://github.com/beyond-all-reason/spads_config_bar
+}
+
+maps_metadata_repo: Maps Metadata {
+  class: github
+  link: https://github.com/beyond-all-reason/maps-metadata
+}
+
+maps_metadata_repo -> chobby: Push commit
+maps_metadata_repo -> spads_config: Push commit
+maps_metadata_repo -> maps_metadata.r2meta: Push metadata
+maps_metadata_repo -> gdrive_maps: Sync maps
+maps_metadata_repo -> website
+maps_metadata_repo -> rowy: Pull
+
+chobby -> launcher_config.worker: Push dist_cfg/config.json
+
+rapid: Rapid {
+  shape: cloud
+  link: layers.rapid
+}
+
+gdrive_maps: Google Drive Maps
+website: Main Website {
+  tooltip: |md
+    What is hosted on https://www.beyondallreason.info/maps
+
+    Build using Webflow
+  |
+}

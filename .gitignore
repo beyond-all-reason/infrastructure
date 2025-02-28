@@ -1,3 +1,5 @@
-.venv
+.pyenv
+.env
 .cache
+.d2
 /site

@@ -1,0 +1,80 @@
+...@serving_colors
+
+**: {
+  &shape: image
+  width: 100
+}
+
+user: {
+  shape: person
+}
+
+user -> files.worker
+
+springfiles: SpringFiles {
+  link: https://springfiles.springrts.com/
+}
+
+files: Files {
+  class: cloudflare
+  tooltip: |md
+    https://files-cdn.beyondallreason.dev/
+
+    Source: https://github.com/beyond-all-reason/maps-hosting
+  |
+
+  worker
+  r2: R2 Assets {
+    shape: cylinder
+    style.multiple: true
+    tooltip: |md
+      3 buckets geographically distributes across North America, Europe, and Asia.
+    |
+  }
+  KV: {shape: cylinder}
+
+  worker -> r2: read
+  worker -> KV: read
+  worker -> _.gcp_files.cache_pubsub: sync
+  worker -> _.springfiles: fallback lookup
+}
+
+gcp_files: Files {
+  class: gcp
+
+  cacher: Cacher {
+    icon: https://icons.terrastruct.com/gcp/Products%20and%20services/Compute/Cloud%20Run.svg
+    shape: image
+    link: https://github.com/cshum/imagor
+  }
+
+  maps_upload: Maps Upload Bucket {
+    icon: https://icons.terrastruct.com/gcp/Products%20and%20services/Storage/Cloud%20Storage.svg
+    shape: image
+    tooltip: |md
+      Mappers have permission to directly put new map files there via web interface to upload them to CDN.
+
+      https://console.cloud.google.com/storage/browser/bar-springfiles-syncer_assets-upload
+    |
+  }
+
+  cache_pubsub: Cache PubSub {
+    icon: https://icons.terrastruct.com/gcp%2FProducts%20and%20services%2FData%20Analytics%2FCloud%20PubSub.svg
+    shape: image
+  }
+
+  maps_upload -> cacher: PubSub Upload trigger
+  cache_pubsub -> cacher: trigger
+  cacher -> _.files.r2: write
+  cacher -> _.files.kv: write
+  cacher -> _.springfiles: read
+  cacher -> _.engine: download release
+  cacher -> maps_upload: read
+}
+
+engine: Recoil Engine {
+  class: github
+  link: https://github.com/beyond-all-reason/spring
+}
+
+engine -> gcp_files.cache_pubsub: New release

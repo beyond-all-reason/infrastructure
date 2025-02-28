@@ -1,4 +1,4 @@
-# Components
+# Components Index
 
 Infra is spread across many different repositories, with different functions. On
 this page is a current comprehensive list (index like) of everything that BAR
