@@ -4,7 +4,7 @@ Infra is spread across many different repositories, with different functions. On
 this page is a current comprehensive list (index like) of everything that BAR
 infrastructure consists of.
 
-> [!INFO]
+> [!NOTE]
 > Even though many of the repositories below are hosting UI visible to players,
 > the infrastructure team is not responsible for the design and overall UX
 > improvements. The same applies to rating, balancing and data analysis. Other

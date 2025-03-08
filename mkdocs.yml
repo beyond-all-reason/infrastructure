@@ -4,8 +4,9 @@ repo_url: https://github.com/beyond-all-reason/infrastructure
 edit_uri: edit/main/docs/
 nav:
   - Home: index.md
-  - Current Infra: current_infra.md
-  - Assets Serving: assets_serving.md
+  - System overview:
+    - Runtime Infrastructure: current_infra.md
+    - Assets Serving: assets_serving.md
   - Component Index: components.md
 
 theme:
@@ -13,6 +14,7 @@ theme:
   features:
     - content.action.edit
     - content.action.view
+    - navigation.sections
   palette:
     - media: "(prefers-color-scheme)"
       toggle:
@@ -43,3 +45,5 @@ markdown_extensions:
   - pymdownx.details
   - pymdownx.superfences
   - pymdownx.magiclink
+  - toc:
+        permalink: true
