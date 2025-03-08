@@ -1,0 +1,99 @@
+classes: {
+  gcp: {style.fill: "#d0ecff"}
+  cloudflare: {style.fill: "#fff3d0"}
+  github: {style.fill: "#ebffe3"}
+  vm: {style.fill: "#ffe3f1"}
+}
+
+**: {
+  &shape: image
+  width: 100
+}
+
+user: {
+  shape: person
+}
+
+user -> maps_metadata.worker
+
+maps_metadata: Maps Metadata {
+  class: cloudflare
+  tooltip: |md
+    https://maps-metadata.beyondallreason.dev/
+
+    Cloudflare worker serving data from R2 bucket
+
+    https://github.com/beyond-all-reason/maps-metadata/tree/main/cloud/serving
+  |
+
+  worker
+
+  r2meta: R2 Metadata {shape: cylinder}
+  r2images: R2 Images {shape: cylinder}
+
+  worker -> r2meta: read
+  worker -> r2images: read
+  worker -> _.rowy.imagor: Image transform
+}
+
+rowy: Rowy {
+  class: gcp
+  tooltip: |md
+    https://rowy.beyondallreason.dev/
+
+    Our own deployment of Rowy with custom patches as Firebase app on GCP.
+
+    There is also a bunch of small services there to support syncing, inside https://github.com/beyond-all-reason/maps-metadata/tree/main/cloud
+  |
+
+  frontend: Frontend {
+    tooltip: Firebase frontend, https://rowy.beyondallreason.dev/
+  }
+
+  firestore: Firestore {
+    icon: https://icons.terrastruct.com/gcp/Products%20and%20services/Databases/Cloud%20Firestore.svg
+    shape: image
+  }
+  map_parser: Map Parser {
+    icon: https://icons.terrastruct.com/gcp/Products%20and%20services/Compute/Cloud%20Run.svg
+    shape: image
+    link: https://github.com/beyond-all-reason/maps-metadata/tree/main/cloud/map-parser
+  }
+  github_trigger: Github Trigger {
+    icon: https://icons.terrastruct.com/gcp/Products%20and%20services/Compute/Cloud%20Run.svg
+    shape: image
+    link: https://github.com/beyond-all-reason/maps-metadata/tree/main/cloud/github-trigger
+  }
+  imagor: Imagor {
+    icon: https://icons.terrastruct.com/gcp/Products%20and%20services/Compute/Cloud%20Run.svg
+    shape: image
+    link: https://github.com/cshum/imagor
+  }
+  uploaded_assets: Uploaded Assets Bucket {
+    icon: https://icons.terrastruct.com/gcp/Products%20and%20services/Storage/Cloud%20Storage.svg
+    shape: image
+  }
+  maps_cache: Parsed Maps Bucket {
+    icon: https://icons.terrastruct.com/gcp/Products%20and%20services/Storage/Cloud%20Storage.svg
+    shape: image
+  }
+
+  frontend -> firestore: read/write
+  frontend -> maps_cache: read
+  frontend -> uploaded_assets: read/write
+  frontend -> map_parser: invoke
+  frontend -> github_trigger: invoke
+  map_parser -> maps_cache: write
+  imagor -> maps_cache: read
+  imagor -> uploaded_assets: read
+  imagor -> _.maps_metadata.r2images: write
+  github_trigger -> _.maps_metadata_repo: sync single map
+}
+
+maps_metadata_repo: Maps Metadata {
+  class: github
+  link: https://github.com/beyond-all-reason/maps-metadata
+}
+
+maps_metadata_repo -> maps_metadata.r2meta: Push metadata
+maps_metadata_repo -> rowy.firestore: Pull

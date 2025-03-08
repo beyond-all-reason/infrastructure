@@ -1,0 +1,186 @@
+classes: {
+  soft: {
+    style: {
+      stroke-dash: 5
+      stroke-width: 1
+    }
+  }
+}
+
+user: Player {
+  shape: person
+  style.multiple: true
+}
+
+user -> pc.launcher: starts {class: soft}
+user -> website: uses {class: soft}
+
+game_server: Game Server {
+  tooltip: |md
+    All game servers are provisioned and maintained via Ansible playbook.
+
+    Repo: https://github.com/beyond-all-reason/ansible-spads-setup
+  |
+  style.multiple: true
+
+  engine_dedi: Recoil Engine (dedicated) {
+    tooltip: |md
+      A special version of Recoil Engine that doesn't run any simulation, but synchronizes and forwards all game commands between players.
+
+      All the communication between Game and SPADS/teiserver happens via Autohost interface.
+    |
+    style.multiple: true
+  }
+
+  spads: SPADS {
+    tooltip: |md
+      Manages individual lobby rooms
+
+      Repo: https://github.com/Yaribz/SPADS
+    |
+    style.multiple: true
+  }
+
+  assets: Game Assets {shape: page}
+
+  spads -> engine_dedi: starts {class: soft}
+
+  engine_dedi <-> spads: Autohost Protocol
+
+  engine_dedi -> assets: reads
+  spads -> assets: reads
+}
+
+pc: Player's PC {
+  style.multiple: true
+
+  engine: Recoil Engine {
+    link: https://github.com/beyond-all-reason/spring
+
+    chobby: Chobby {
+      tooltip: |md
+        The lobby player sees when opening the game
+
+        Repo: https://github.com/beyond-all-reason/BYAR-Chobby
+      |
+    }
+    game: BAR Game {
+      tooltip: |md
+        The actual core Beyond All Reason game
+
+        Repo: https://github.com/beyond-all-reason/Beyond-All-Reason
+      |
+    }
+
+    chobby -> game: starts {class: soft}
+  }
+  launcher: Spring Launcher {
+    tooltip: |md
+      Responsible for downloading and updating engine and all of the assets before launching the game.
+
+      Repo: https://github.com/beyond-all-reason/spring-launcher
+    |
+  }
+  prd: pr-downloader {
+    tooltip: |md
+      CLI application that downloads updates in efficient format understood by the engine.
+
+      Repo: https://github.com/beyond-all-reason/pr-downloader
+    |
+  }
+
+  assets: Game Assets {
+    shape: page
+    tooltip: Engine, Maps, Game files
+  }
+
+  launcher -> engine: starts {class: soft}
+
+  launcher -> prd: CLI invoke
+
+  prd -> assets: writes
+  engine -> assets: reads
+
+  engine.chobby -> launcher: bridge protocol
+}
+
+cdn: Assets Serving {
+  tooltip: |md
+    We use multiple CDNs and endpoints for hosting different game assets and configuration.
+
+    We don't include all the arrows on the diagram for clarity.
+  |
+  shape: cloud
+}
+
+email: Email Server
+discord: Discord
+
+lobby_server: Lobby Server {
+  tooltip: |md
+    The server is provisioned and configured via Ansible playbook.
+
+    Repo: https://github.com/beyond-all-reason/ansible-teiserver
+  |
+
+  teiserver: Teiserver {
+    tooltip: |md
+      The main "Server" of the game. https://server4.beyondallreason.info/
+
+      It faciliates:
+       - Communication between players and hosts
+       - Accounts management
+       - Rating
+       - Moderation
+
+      Repo: https://github.com/beyond-all-reason/teiserver/
+    |
+  }
+
+  db: PostgreSQL
+
+  teiserver -> db
+
+  teiserver -> _.email: SMTP
+  teiserver <-> _.discord
+}
+
+game_server.spads <-> lobby_server.teiserver: SpringLobby protocol
+pc.engine.chobby <-> lobby_server.teiserver: SpringLobby protocol
+
+game_server.engine_dedi <-> pc.engine: Engine Protocol
+
+live_services: BAR Live Services {
+  tooltip: |md
+    BAR Live Services https://bar-rts.com/ hosts replay, list of active matches etc
+
+    - Frontend: https://github.com/beyond-all-reason/bar-live-services
+    - Backend: https://github.com/beyond-all-reason/bar-db
+  |
+}
+
+live_services <-> lobby_server.teiserver: SpringLobby protocol
+game_server.spads -> live_services: uploads replays {class: soft}
+
+website -> live_services: embeds {class: soft}
+
+website: Main Website {
+  tooltip: |md
+    https://www.beyondallreason.info, built using [Webflow](https://webflow.com/)
+  |
+}
+
+# Too much noise, not enough clarity if we add those
+# pc.prd -> cdn
+# pc.launcher -> cdn
+# game_server.assets -> cdn: fetched from {
+#   style.stroke-dash: 5
+#   style.stroke-width: 1
+# }
+# live_services -> cdn
+
+legend: |md
+  SpringLobby Protocol: https://github.com/spring/LobbyProtocol
+| {
+  near: bottom-center
+}

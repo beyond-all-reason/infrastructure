@@ -1,0 +1,99 @@
+classes: {
+  soft: {
+    style: {
+      stroke-dash: 5
+      stroke-width: 1
+    }
+  }
+}
+
+engine_dedi: Recoil Engine (dedicated) {
+  style.multiple: true
+}
+
+spads: SPADS {
+  style.multiple: true
+
+  plugins: {
+    style.stroke-dash: 2
+    tooltip: |md
+      We run [*plenty*](https://github.com/beyond-all-reason/spads_config_bar/tree/main/var/plugins) of different plugins, we call out BAR manager as it's to some degree special.
+    |
+
+    bar_manager: Bar Manager {
+      tooltip: |md
+        A special BAR dedicated plugin with some BAR centric functionality.
+
+        Source: https://github.com/beyond-all-reason/spads_config_bar/blob/main/var/plugins/barmanager.py
+      |
+    }
+  }
+
+  unitsync: unitsync.so {
+    tooltip: |md
+      Dynamically loaded `unitsync.so` library from engine distribution that is used to read information about assets, list game version, modoptions etc.
+    |
+  }
+}
+
+spads_cluster: SPADS (Cluster Manager) {
+  plugins: {
+    style.stroke-dash: 2
+
+    cluster_manager: Cluster Manager {
+      tooltip: |md
+        A plugin that monitors how many SPADS processes are running and spins up new ones as needed, to make sure there is always some free lobby room available.
+      |
+    }
+  }
+}
+
+assets: Game Assets {shape: page}
+
+cron: {
+  icon: https://icons.terrastruct.com/arrows/updating-arrow.svg
+  shape: image
+  width: 80
+}
+
+spads_cluster -> spads: starts {class: soft}
+
+spads -> engine_dedi: starts {class: soft}
+
+engine_dedi <-> spads: Autohost Protocol
+
+prd: pr-downloader
+map_syncer: Map Syncer {
+  tooltip: |md
+    A dedicated service that watches changes in maps-metadata and makes sure that server has all the maps by downloading new ones and removing old.
+
+    Source: https://github.com/beyond-all-reason/maps-metadata/tree/main/tools/map_syncer
+  |
+}
+
+cron -> prd: CLI invoke
+
+prd -> assets: writes
+map_syncer -> assets: writes
+
+engine_dedi -> assets: reads
+spads.unitsync -> assets: reads
+
+spads_config: SPADS Configuration {
+  shape: page
+  tooltip: |md
+    All SPADS configuration is stored in https://github.com/beyond-all-reason/spads_config_bar
+
+    The configuration incudes all plugins, their configuration, and a bunch of scripts used on the server.
+  |
+}
+
+spads -> spads_config: reads
+spads_cluster -> spads_config: reads
+cron -> spads_config: trigger update script
+
+replay_upload: Replay Upload Script {
+  tooltip: "Just a small bash script that is triggered by SPADS to upload replay for public matches to BAR live services"
+}
+
+spads -> replay_upload

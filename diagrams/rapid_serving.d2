@@ -1,0 +1,110 @@
+...@serving_colors
+
+**: {
+  &shape: image
+  width: 100
+}
+
+user: {
+  shape: person
+}
+
+user -> bunny.bucket
+
+bunny: Bunny CDN {
+  tooltip: |md
+    Used only for hosting Rapid repo, domain https://repos-cdn.beyondallreason.dev/.
+
+    We are using https://bunny.net/
+  |
+
+  bucket: Bucket
+  edge_rule: Edge Rule
+}
+
+rapid: Rapid Build Server {
+  class: vm
+  tooltip: |md
+    Managed with Ansible playbook: https://github.com/beyond-all-reason/rapid-hosting
+  |
+
+  cron: {
+    icon: https://icons.terrastruct.com/arrows/updating-arrow.svg
+    shape: image
+    width: 80
+  }
+
+  rapid_tools: RapidTools {
+    tooltip: |md
+      RapidTools is package that is used to actually compile git repository to Rapid format
+
+      Source: https://github.com/beyond-all-reason/RapidTools
+    |
+  }
+
+  files: Rapid Repo {
+    shape: page
+  }
+
+  git_checkouts: Git Checkouts {
+    shape: page
+    style.multiple: true
+  }
+
+  http: HTTP Server
+
+  update_script: Update Script
+
+  update_script -> rapid_tools: invoke
+  update_script -> git_checkouts: write
+
+  cron -> update_script: trigger
+
+  rapid_tools -> git_checkouts: read
+  rapid_tools -> files: write
+
+  http -> files: read
+}
+
+rapid_syncer: Rapid Syncer {
+  class: gcp
+  scheduler: {
+    icon: https://icons.terrastruct.com/gcp/Products%20and%20services/Developer%20Tools/Cloud%20Scheduler.svg
+    shape: image
+  }
+
+  syncer: CDN Syncer {
+    icon: https://icons.terrastruct.com/gcp/Products%20and%20services/Compute/Cloud%20Run.svg
+    shape: image
+    link: https://github.com/beyond-all-reason/recoil-rapid-syncer
+  }
+
+  version_pinner: Version Pinner {
+    icon: https://icons.terrastruct.com/gcp/Products%20and%20services/Compute/Cloud%20Run.svg
+    shape: image
+    link: https://github.com/p2004a/bar-repos-bunny-replication-lag-mitigation
+  }
+
+  scheduler -> syncer: trigger
+  scheduler -> version_pinner: trigger
+
+  syncer -> _.rapid.http: read
+  syncer -> _.bunny.bucket: read/write
+
+  version_pinner -> _.bunny.edge_rule: Pin latest version
+}
+
+chobby_repo: Chobby {
+  class: github
+  link: https://github.com/beyond-all-reason/BYAR-Chobby
+}
+
+bar_repo: Beyond-All-Reason {
+  class: github
+  link: https://github.com/beyond-all-reason/Beyond-All-Reason
+}
+
+rapid.update_script -> *_repo: Git pull
+*_repo -> rapid.update_script: Trigger build (ssh)
+*_repo -> rapid_syncer.syncer: trigger
+*_repo -> rapid_syncer.version_pinner: trigger
