@@ -1,4 +1,4 @@
-.pyenv
+.venv
 .env
 .cache
 .d2
