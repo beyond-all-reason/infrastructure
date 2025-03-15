@@ -7,6 +7,8 @@ nav:
   - System overview:
     - Runtime Infrastructure: current_infra.md
     - Assets Serving: assets_serving.md
+  - Projects:
+    - New Client and Protocol: new_client.md
   - Component Index: components.md
 
 theme:
@@ -14,6 +16,7 @@ theme:
   features:
     - content.action.edit
     - content.action.view
+    - content.tooltips
     - navigation.sections
   palette:
     - media: "(prefers-color-scheme)"
@@ -40,10 +43,10 @@ plugins:
       layout: tala
       dark_theme: 200
 markdown_extensions:
-  - attr_list
+  - abbr
   - admonition
+  - attr_list
   - pymdownx.details
-  - pymdownx.superfences
   - pymdownx.magiclink
   - toc:
         permalink: true
