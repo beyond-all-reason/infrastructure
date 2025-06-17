@@ -19,7 +19,7 @@ The entry point of the interaction is [Spring Launcher](https://github.com/beyon
 
 The launcher then starts the Recoil engine process with the "Menu" configured to be [Chobby](https://github.com/beyond-all-reason/BYAR-Chobby), which has the UI to log in, start a single-player game, etc. Chobby itself can't do much because it's written in Lua and constrained to use the engine APIs, but it has support for opening network sockets. For any advanced functions, e.g., Discord rich presence, triggering map downloads, it calls the launcher via the local network interface.
 
-Chobby connects to the lobby server ([teiserver](https://github.com/beyond-all-reason/teiserver/)) using the [SpringLobby protocol](https://github.com/spring/LobbyProtocol) for multiplayer features. It's responsible for starting the game in the same engine instance it's running in. For details about starting the game in the engine, see [the article in Engine documentation](https://beyond-all-reason.github.io/spring/articles/technicalities-of-starting-a-match).
+Chobby connects to the lobby server ([teiserver](https://github.com/beyond-all-reason/teiserver/)) using the [SpringLobby protocol](https://github.com/spring/LobbyProtocol) for multiplayer features. It's responsible for starting the game in the same engine instance it's running in. For details about starting the game in the engine, see [the article in Engine documentation](https://beyond-all-reason.github.io/RecoilEngine/articles/technicalities-of-starting-a-match).
 
 ### Multiplayer lobbies
 
