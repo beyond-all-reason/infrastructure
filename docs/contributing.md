@@ -31,9 +31,12 @@ If you've looked for an issue but are still unsure where to start, feel free to 
 
 Many potential improvements aren't tracked in an issue yet. If you have an idea or find something to improve, please bring it up for discussion! We value proactive contributions.
 
-To give you a sense of the possibilities, here are a couple of examples of areas where you could help, that just aren't scoped as issues at the moment:
+To give you a sense of the possibilities, here are a couple of examples of areas that just aren't scoped as issues at the moment:
+
 - Finishing the [Recoil Engine docker build](https://raw.githubusercontent.com/beyond-all-reason/RecoilEngine/refs/heads/master/docker-build-v2/README.md) (e.g., adding Windows testing or Podman support).
 - Reducing the complexity of the game's infrastructure build process, which has some quirks for historical reasons.
+
+As you learn more about the project and how things are connected together issues like this will pop up to you very quickly.
 
 ## The Contribution Process
 
