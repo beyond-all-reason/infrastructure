@@ -2,22 +2,26 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://beyond-all-reason.github.io/infrastructure/</loc>
-         <lastmod>2025-06-17</lastmod>
+         <lastmod>2025-07-06</lastmod>
     </url>
     <url>
          <loc>https://beyond-all-reason.github.io/infrastructure/assets_serving/</loc>
-         <lastmod>2025-06-17</lastmod>
+         <lastmod>2025-07-06</lastmod>
     </url>
     <url>
          <loc>https://beyond-all-reason.github.io/infrastructure/components/</loc>
-         <lastmod>2025-06-17</lastmod>
+         <lastmod>2025-07-06</lastmod>
+    </url>
+    <url>
+         <loc>https://beyond-all-reason.github.io/infrastructure/contributing/</loc>
+         <lastmod>2025-07-06</lastmod>
     </url>
     <url>
          <loc>https://beyond-all-reason.github.io/infrastructure/current_infra/</loc>
-         <lastmod>2025-06-17</lastmod>
+         <lastmod>2025-07-06</lastmod>
     </url>
     <url>
          <loc>https://beyond-all-reason.github.io/infrastructure/new_client/</loc>
-         <lastmod>2025-06-17</lastmod>
+         <lastmod>2025-07-06</lastmod>
     </url>
 </urlset>
