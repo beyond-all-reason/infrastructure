@@ -23,6 +23,8 @@ A great way to start is by tackling an existing issue. Check the issue trackers 
 
 Look for issues tagged with `good first issue`, as these are well-suited for new contributors. While not all repositories may have them, it's a good starting point.
 
+Some larger cross-system issues/projects are tracked in the [`infrastructure`](https://github.com/beyond-all-reason/infrastructure/issues) repository.
+
 #### Can't Find Anything?
 
 If you've looked for an issue but are still unsure where to start, feel free to ask. To help us point you in the right direction, please tell us a bit about your interests and what parts of the project you've already looked at.
