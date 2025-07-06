@@ -2,6 +2,9 @@
 
 Welcome! We're a volunteer-driven project, and we're excited you're here to help. This page will guide you on how to get started with the Beyond All Reason infrastructure.
 
+> [!TIP]
+> This documentation is a new and evolving resource. If you find anything unclear or have unanswered questions, we welcome your feedback! Please [open an issue](https://github.com/beyond-all-reason/infrastructure/issues) to share your thoughts. Contributing to the docs is also a fantastic way to make your first contribution.
+
 Our core philosophy is applying software engineering to operations. We try to build robust solutions, and that often means changing code or building new tools, not just managing servers.
 
 ## Communication
@@ -33,18 +36,19 @@ If you've looked for an issue but are still unsure where to start, feel free to 
 
 Many potential improvements aren't tracked in an issue yet. If you have an idea or find something to improve, please bring it up for discussion! We value proactive contributions.
 
-To give you a sense of the possibilities, here are a couple of examples of areas that just aren't scoped as issues at the moment:
-
-- Finishing the [Recoil Engine docker build](https://raw.githubusercontent.com/beyond-all-reason/RecoilEngine/refs/heads/master/docker-build-v2/README.md) (e.g., adding Windows testing or Podman support).
-- Reducing the complexity of the game's infrastructure build process, which has some quirks for historical reasons.
-
-As you learn more about the project and how things are connected together issues like this will pop up to you very quickly.
+> [!EXAMPLE]
+> To give you a sense of the possibilities, here are a couple of _examples_ of areas that just aren't scoped as issues at the moment:
+>
+> - Finishing the [Recoil Engine docker build](https://raw.githubusercontent.com/beyond-all-reason/RecoilEngine/refs/heads/master/docker-build-v2/README.md) (e.g., adding Windows testing or Podman support).
+> - Reducing the complexity of the game's infrastructure build process, which has some quirks for historical reasons.
+>
+> As you learn more about the project and how things are connected together issues like this will pop up to you very quickly.
 
 ## The Contribution Process
 
 1.  **Find or create an issue.** This helps track the work.
-2.  **For larger changes, agree on a plan first.** This ensures we're all on the same page.
-3.  **Fork the repo, create a branch, and write your code.**
-4.  **Submit a pull request** with a clear description of your changes.
+2.  **Check for a `CONTRIBUTING.md` file.** It might contain specific guidelines relevant to that repository.
+3.  **For larger changes, agree on a plan first.** This ensures we're all on the same page and you don't waste your time.
+4.  **Fork the repo, create a branch, write your code, submit a pull request.** Following the standard [GitHub Flow](https://docs.github.com/en/get-started/using-github/github-flow) process.
 
 We look forward to your contributions!
