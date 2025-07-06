@@ -45,3 +45,9 @@ Below diagram shows the Game Server setup in more detail.
 The game server is managed by an Ansible playbook: https://github.com/beyond-all-reason/ansible-spads-setup
 
 ![Diagram](diagrams/current_game_server.d2){pad=10}
+
+## Hosting
+
+All runtime components are hosted on virtual machines that are manually provisioned and managed with Ansible playbooks ([Game Server](https://github.com/beyond-all-reason/ansible-spads-setup), [Lobby Server](https://github.com/beyond-all-reason/ansible-teiserver)). The VMs, and the infrastructure as a whole, are funded directly by [donations](https://www.beyondallreason.info/donate-to-bar). Access to this infrastructure is restricted to a few trusted volunteers.
+
+We do not accept private hosting or hardware donations. This policy is in place because we must retain full administrative access to the infrastructure to ensure compliance with our [privacy policy](https://www.beyondallreason.info/privacy). Relying on third-party hosting introduces significant operational risks and administrative overhead.
