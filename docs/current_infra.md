@@ -4,6 +4,9 @@ On this page, we describe the components of the "Runtime" infrastructure: roughl
 
 All components of the runtime infrastructure also need to fetch different assets and configurations to function, and that part is described on the [Assets Serving](assets_serving.md) page.
 
+> [!IMPORTANT]
+> This page covers how we the runtime infrastructure looks like *right now*. The large strategic [New Lobby Client project](new_client.md) is going to change a lot of this, and makes some existing runtime components in maintanance mode.
+
 ## System diagram
 
 > [!TIP]
