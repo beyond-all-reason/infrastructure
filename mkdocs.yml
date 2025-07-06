@@ -4,6 +4,7 @@ repo_url: https://github.com/beyond-all-reason/infrastructure
 edit_uri: edit/main/docs/
 nav:
   - Home: index.md
+  - Contributing: contributing.md
   - System overview:
     - Runtime Infrastructure: current_infra.md
     - Assets Serving: assets_serving.md
