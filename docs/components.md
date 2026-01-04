@@ -22,10 +22,6 @@ engine instances clients connect to to play the game.
 - [ansible-spads-setup]: Overall game servers configuration.
 - [recoil-autohost]: Work in progress [tachyon] protocol autohost.
 
-There is also some monitoring setup: health checks using
-[healthchecks.io](https://healthchecks.io/) and Okema's
-[Zabbix instance](https://zabbix.bar.gaming.rodeo/).
-
 ## Lobby rooms serving
 
 The online components needed to set up and prepare the lobby rooms before the
@@ -67,6 +63,17 @@ ready to start the game.
 
 - [bar_debug_launcher]: BAR Debug launcher. It's not intended for end users,
   it is a developer tool.
+
+## Monitoring
+
+- [ansible-monitoring]: Our VictoriaMetrics, Grafana, ... monitoring server
+  that's gathering data from other hosts. Served at
+  https://grafana.beyondallreason.dev/ and a few other domains.
+
+There is also some monitoring setup: health checks using
+[healthchecks.io](https://healthchecks.io/) and Okema's
+[Zabbix instance](https://zabbix.bar.gaming.rodeo/) that's being replaced by
+the monitoring server.
 
 ## Game assets distribution
 
@@ -126,3 +133,4 @@ Infrastructure responsible for making all the game assets available to players.
 [bar-db]: https://github.com/beyond-all-reason/bar-db
 [bar-live-services]: https://github.com/beyond-all-reason/bar-live-services
 [logs-upload]: https://github.com/beyond-all-reason/logs-upload
+[ansible-monitoring]: https://github.com/beyond-all-reason/ansible-monitoring
