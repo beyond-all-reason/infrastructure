@@ -30,8 +30,6 @@ jobs:
       - name: Install Python dependencies
         run: pip install -r requirements.txt
       - name: Install D2
-        run: curl -fsSL https://d2lang.com/install.sh | sh -s -- --tala
+        run: curl -fsSL https://d2lang.com/install.sh | sh
       - name: Build and push docs
         run: mkdocs gh-deploy --force
-        env:
-          TSTRUCT_TOKEN: ${{ secrets.TSTRUCT_TOKEN }}

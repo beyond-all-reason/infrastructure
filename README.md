@@ -8,7 +8,7 @@ First set up the Python project and install required dependencies:
 
 ```
 $ python3 -m venv .venv
-$ curl -fsSL https://d2lang.com/install.sh | sh -s -- --tala --method standalone --prefix $(pwd)/.d2/
+$ curl -fsSL https://d2lang.com/install.sh | sh -s -- --method standalone --prefix $(pwd)/.d2/
 $ source .envrc
 $ pip install -r requirements.txt
 ```
