@@ -9,41 +9,87 @@ user: {
   shape: person
 }
 
-user -> bunny.bucket
+user -> bunny.pull_zone: Download packages
 
-bunny: Bunny CDN {
+bunny: Bunny {
   tooltip: |md
-    Used only for hosting Rapid repo, domain https://repos-cdn.beyondallreason.dev/.
+    Rapid repos are served to players from
+    https://repos-cdn.beyondallreason.dev/.
 
-    We are using https://bunny.net/
+    The CDN is provided by https://bunny.net/.
   |
 
-  bucket: Bucket
-  edge_rule: Edge Rule
-}
+  pull_zone: Pull Zone {
+    tooltip: |md
+      https://repos-cdn.beyondallreason.dev/
 
-rapid: Rapid Build Server {
-  class: vm
-  tooltip: |md
-    Managed with Ansible playbook: https://github.com/beyond-all-reason/rapid-hosting
-  |
+      The repos.gz master list is maintained directly in the storage zone. The
+      builder does not write it.
+    |
 
-  cron: {
-    icon: https://icons.terrastruct.com/arrows/updating-arrow.svg
-    shape: image
-    width: 80
+    edge_rule: Edge Rule {
+      tooltip: |md
+        Redirects a repo's versions.gz to the unique fresh copy uploaded by the
+        last build.
+
+        This works around Bunny storage replication lag. Edge rule changes
+        propagate globally within a minute, but newly uploaded files do not.
+      |
+    }
   }
 
-  rapid_tools: RapidTools {
+  storage: Storage Zone {
+    shape: cylinder
     tooltip: |md
-      RapidTools is package that is used to actually compile git repository to Rapid format
-
-      Source: https://github.com/beyond-all-reason/RapidTools
+      Holds the pool, packages, versions.gz, and fresh copies for every repo.
+      It is the origin for the pull zone.
     |
   }
 
-  files: Rapid Repo {
+  pull_zone -> storage: origin
+}
+
+rapid: Rapid Hosting Server {
+  class: vm
+  tooltip: |md
+    Debian host managed with the Ansible playbook at
+    https://github.com/beyond-all-reason/rapid-hosting.
+
+    The host is shared with the SPADS setup. All services run as Podman
+    quadlets.
+  |
+
+  caddy: Caddy {
+    tooltip: |md
+      Terminates TLS for https://repos.beyondallreason.dev/, serves the store as
+      the origin for the repos, and reverse-proxies /build to the builder
+      without buffering the response.
+    |
+  }
+
+  builder: rapid-builder {
+    tooltip: |md
+      HTTP service that builds Rapid packages on request and publishes them to
+      Bunny. It verifies the OIDC token, evaluates the repo's CEL policy, and
+      serializes builds for each repo.
+
+      Source: https://github.com/beyond-all-reason/rapid-hosting/tree/main/rapid-builder
+    |
+    link: https://github.com/beyond-all-reason/rapid-hosting/tree/main/rapid-builder
+  }
+
+  buildgit: rapid-buildgit {
+    tooltip: |md
+      Tool that converts a Git checkout to Rapid format and incrementally
+      updates the local store.
+
+      Part of https://github.com/beyond-all-reason/RapidTools
+    |
+  }
+
+  store: Rapid Store {
     shape: page
+    style.multiple: true
   }
 
   git_checkouts: Git Checkouts {
@@ -51,50 +97,42 @@ rapid: Rapid Build Server {
     style.multiple: true
   }
 
-  http: HTTP Server
+  caddy -> builder: POST /build
+  caddy -> store: read
 
-  update_script: Update Script
+  builder -> git_checkouts: fetch commit
+  builder -> buildgit: invoke
+  builder -> store: read
 
-  update_script -> rapid_tools: invoke
-  update_script -> git_checkouts: write
-
-  cron -> update_script: trigger
-
-  rapid_tools -> git_checkouts: read
-  rapid_tools -> files: write
-
-  http -> files: read
+  buildgit -> git_checkouts: read
+  buildgit -> store: write
 }
 
-rapid_syncer: Rapid Syncer {
-  class: gcp
-  scheduler: {
-    icon: https://icons.terrastruct.com/gcp/Products%20and%20services/Developer%20Tools/Cloud%20Scheduler.svg
-    shape: image
-  }
+rapid.builder -> bunny.storage: Upload pool, packages,\nand versions.gz (rclone)
+rapid.builder -> bunny.pull_zone.edge_rule: Upload a fresh copy and\nupdate the rule
 
-  syncer: CDN Syncer {
-    icon: https://icons.terrastruct.com/gcp/Products%20and%20services/Compute/Cloud%20Run.svg
-    shape: image
-    link: https://github.com/beyond-all-reason/recoil-rapid-syncer
-  }
+actions: GitHub Actions {
+  class: github
+  tooltip: |md
+    A workflow in the game repo calls the composite action to request a build
+    and stream its log. The action retries transient failures.
 
-  version_pinner: Version Pinner {
-    icon: https://icons.terrastruct.com/gcp/Products%20and%20services/Compute/Cloud%20Run.svg
-    shape: image
-    link: https://github.com/p2004a/bar-repos-bunny-replication-lag-mitigation
-  }
-
-  scheduler -> syncer: trigger
-  scheduler -> version_pinner: trigger
-
-  syncer -> _.rapid.http: read
-  syncer -> _.bunny.bucket: read/write
-
-  version_pinner -> _.bunny.edge_rule: Pin latest version
+    Source: https://github.com/beyond-all-reason/rapid-hosting/tree/main/action
+  |
+  link: https://github.com/beyond-all-reason/rapid-hosting/tree/main/action
 }
 
-chobby_repo: Chobby {
+oidc: GitHub OIDC Provider {
+  class: github
+  tooltip: |md
+    https://token.actions.githubusercontent.com
+
+    The workflow's token is the only credential. GitHub and the builder do not
+    share any secrets.
+  |
+}
+
+chobby_repo: BYAR-Chobby {
   class: github
   link: https://github.com/beyond-all-reason/BYAR-Chobby
 }
@@ -104,7 +142,8 @@ bar_repo: Beyond-All-Reason {
   link: https://github.com/beyond-all-reason/Beyond-All-Reason
 }
 
-rapid.update_script -> *_repo: Git pull
-*_repo -> rapid.update_script: Trigger build (ssh)
-*_repo -> rapid_syncer.syncer: trigger
-*_repo -> rapid_syncer.version_pinner: trigger
+*_repo -> actions: Trigger workflow
+actions -> oidc: Mint token
+actions -> rapid.caddy: POST /build (OIDC token)
+rapid.builder -> oidc: Verify token
+rapid.builder -> *_repo: Fetch commit

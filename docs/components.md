@@ -77,23 +77,20 @@ the monitoring server.
 
 ## Game assets distribution
 
-Infrastructure responsible for making all the game assets available to players.
+Infrastructure that makes the game assets available to players.
 
-- [RapidTools]: Packaging of game git repo to rapid format.
-- [rapid-hosting]: Rapid build server configuration.
-- Game CDN distribution: CDN management and syncers to CDN.
-    - [recoil-rapid-syncer]: Rapid repo syncer from builder host to CDN.
-      Also includes a prober to for debugging CDN replication issues.
-    - [p2004a/bar-repos-bunny-replication-lag-mitigation]: Helper to make sure
-      updates to CDN are pushed in consistent way.
-    - [p2004a/rapid-pool-init]: Builder for the initial rapid game download.
-      package.
-- [maps-hosting]: Map CDN: publishing, serving, IaC setup.
-- Maps metadata setup
-    - [maps-metadata]: Main repo that transforms data and distributes to other
-      places via GitHub actions. Also contains source for a few server side
-      components of that system.
-    - Maintenance of [https://rowy.beyondallreason.dev/](https://rowy.beyondallreason.dev/) (deployment with [custom BAR patches](https://github.com/p2004a/rowy/tree/bar-fork)).
+- [RapidTools]: Packages the game Git repo in Rapid format.
+- [rapid-hosting]: Builds and hosts Rapid repos. It includes the build service
+  that publishes repos to the CDN, the GitHub Action that triggers builds, and
+  the Ansible playbook for the server.
+- [p2004a/rapid-pool-init]: Builds the initial Rapid game download package.
+- [maps-hosting]: Publishes and serves maps through a CDN, including the IaC
+  configuration.
+- Maps metadata:
+    - [maps-metadata]: Transforms metadata and distributes it through GitHub
+      Actions. It also contains several server-side components for this system.
+    - [Rowy](https://rowy.beyondallreason.dev/) is maintained with [custom BAR
+      patches](https://github.com/p2004a/rowy/tree/bar-fork).
 
 ## Auxiliary services
 
@@ -125,8 +122,6 @@ Infrastructure responsible for making all the game assets available to players.
 [bar_debug_launcher]: https://github.com/beyond-all-reason/bar_debug_launcher
 [RapidTools]: https://github.com/beyond-all-reason/RapidTools
 [rapid-hosting]: https://github.com/beyond-all-reason/rapid-hosting
-[recoil-rapid-syncer]: https://github.com/beyond-all-reason/recoil-rapid-syncer
-[p2004a/bar-repos-bunny-replication-lag-mitigation]: https://github.com/p2004a/bar-repos-bunny-replication-lag-mitigation
 [p2004a/rapid-pool-init]: https://github.com/p2004a/rapid-pool-init
 [maps-hosting]: https://github.com/beyond-all-reason/maps-hosting
 [maps-metadata]: https://github.com/beyond-all-reason/maps-metadata
