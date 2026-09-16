@@ -784,25 +784,20 @@ impacts infra.</p>
 <a href="https://zabbix.bar.gaming.rodeo/">Zabbix instance</a> that's being replaced by
 the monitoring server.</p>
 <h2 id="game-assets-distribution">Game assets distribution<a class="headerlink" href="#game-assets-distribution" title="Permanent link">&para;</a></h2>
-<p>Infrastructure responsible for making all the game assets available to players.</p>
+<p>Infrastructure that makes the game assets available to players.</p>
 <ul>
-<li><a href="https://github.com/beyond-all-reason/RapidTools">RapidTools</a>: Packaging of game git repo to rapid format.</li>
-<li><a href="https://github.com/beyond-all-reason/rapid-hosting">rapid-hosting</a>: Rapid build server configuration.</li>
-<li>Game CDN distribution: CDN management and syncers to CDN.<ul>
-<li><a href="https://github.com/beyond-all-reason/recoil-rapid-syncer">recoil-rapid-syncer</a>: Rapid repo syncer from builder host to CDN.
-  Also includes a prober to for debugging CDN replication issues.</li>
-<li><a href="https://github.com/p2004a/bar-repos-bunny-replication-lag-mitigation">p2004a/bar-repos-bunny-replication-lag-mitigation</a>: Helper to make sure
-  updates to CDN are pushed in consistent way.</li>
-<li><a href="https://github.com/p2004a/rapid-pool-init">p2004a/rapid-pool-init</a>: Builder for the initial rapid game download.
-  package.</li>
-</ul>
-</li>
-<li><a href="https://github.com/beyond-all-reason/maps-hosting">maps-hosting</a>: Map CDN: publishing, serving, IaC setup.</li>
-<li>Maps metadata setup<ul>
-<li><a href="https://github.com/beyond-all-reason/maps-metadata">maps-metadata</a>: Main repo that transforms data and distributes to other
-  places via GitHub actions. Also contains source for a few server side
-  components of that system.</li>
-<li>Maintenance of <a href="https://rowy.beyondallreason.dev/">https://rowy.beyondallreason.dev/</a> (deployment with <a href="https://github.com/p2004a/rowy/tree/bar-fork">custom BAR patches</a>).</li>
+<li><a href="https://github.com/beyond-all-reason/RapidTools">RapidTools</a>: Packages the game Git repo in Rapid format.</li>
+<li><a href="https://github.com/beyond-all-reason/rapid-hosting">rapid-hosting</a>: Builds and hosts Rapid repos. It includes the build service
+  that publishes repos to the CDN, the GitHub Action that triggers builds, and
+  the Ansible playbook for the server.</li>
+<li><a href="https://github.com/p2004a/rapid-pool-init">p2004a/rapid-pool-init</a>: Builds the initial Rapid game download package.</li>
+<li><a href="https://github.com/beyond-all-reason/maps-hosting">maps-hosting</a>: Publishes and serves maps through a CDN, including the IaC
+  configuration.</li>
+<li>Maps metadata:<ul>
+<li><a href="https://github.com/beyond-all-reason/maps-metadata">maps-metadata</a>: Transforms metadata and distributes it through GitHub
+  Actions. It also contains several server-side components for this system.</li>
+<li><a href="https://rowy.beyondallreason.dev/">Rowy</a> is maintained with <a href="https://github.com/p2004a/rowy/tree/bar-fork">custom BAR
+  patches</a>.</li>
 </ul>
 </li>
 </ul>
@@ -845,7 +840,7 @@ the monitoring server.</p>
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">January 4, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">September 16, 2026</span>
   </span>
 
     
